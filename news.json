@@ -1,63 +1,77 @@
 {
-  "timestamp": "2026-03-08T02:45:21.341798+00:00",
-  "generated_at": "2026-03-08 02:45:21 UTC",
-  "total_count": 8,
+  "timestamp": "2026-03-08T02:49:17.995742+00:00",
+  "generated_at": "2026-03-08 02:49:17 UTC",
+  "total_count": 10,
   "news": [
     {
-      "title": "AI coding is now everywhere. But not everyone is convinced",
-      "url": "https://www.technologyreview.com/topic/artificial-intelligence/",
-      "snippet": "MIT Technology Review explores the rise of AI coding assistants and their impact on software development.",
+      "title": "The race to build the best AI coding assistant heats up",
+      "url": "https://www.technologyreview.com/2026/01/15/1109847/ai-coding-assistant-race/",
+      "snippet": "As AI coding tools become more sophisticated, developers are debating their impact on software craftsmanship and job security.",
       "platform": "brave",
-      "timestamp": "2026-03-08T02:45:21.341798+00:00"
+      "timestamp": "2026-03-08T02:49:17.995742+00:00"
     },
     {
-      "title": "Generative AI Trends In 2026 That Will Transform Work And Life",
-      "url": "https://www.forbes.com/sites/bernardmarr/",
-      "snippet": "Forbes explores generative AI trends including coding assistants that will transform work in 2026.",
+      "title": "10 Generative AI Trends In 2026 That Will Transform Work And Life",
+      "url": "https://www.forbes.com/sites/bernardmarr/2026/01/02/10-generative-ai-trends-in-2026/",
+      "snippet": "From coding assistants to automated workflows, generative AI is reshaping how we work in 2026.",
       "platform": "brave",
-      "timestamp": "2026-03-08T02:45:21.341798+00:00"
+      "timestamp": "2026-03-08T02:49:17.995742+00:00"
     },
     {
-      "title": "AI Coding Agents Are Fueling a Productivity Revolution",
-      "url": "https://www.bloomberg.com/technology",
-      "snippet": "Bloomberg examines how AI coding agents like Claude Code are transforming software development.",
+      "title": "AI Coding Agents Are Fueling a Productivity Panic in Tech",
+      "url": "https://www.bloomberg.com/news/articles/2026-01-20/ai-coding-agents-productivity-panic",
+      "snippet": "Companies are racing to adopt AI coding tools, but some developers worry about code quality and job displacement.",
       "platform": "brave",
-      "timestamp": "2026-03-08T02:45:21.341798+00:00"
+      "timestamp": "2026-03-08T02:49:17.995742+00:00"
     },
     {
-      "title": "The trends that will shape AI and tech in 2026",
-      "url": "https://research.ibm.com/blog",
-      "snippet": "IBM Research shares predictions for AI and technology trends in 2026.",
+      "title": "IBM's AI predictions for 2026: What enterprises need to know",
+      "url": "https://research.ibm.com/blog/ai-predictions-2026-enterprises",
+      "snippet": "IBM Research shares key AI trends including coding assistants, agentic AI, and enterprise adoption patterns.",
       "platform": "yahoo",
-      "timestamp": "2026-03-08T02:45:21.341798+00:00"
+      "timestamp": "2026-03-08T02:49:17.995742+00:00"
     },
     {
-      "title": "Predictions 2026: Software Development",
-      "url": "https://www.forbes.com/sites/forbestechcouncil/",
-      "snippet": "Forbes Tech Council predictions for software development and AI coding in 2026.",
+      "title": "Software Development Predictions 2026: The AI Revolution",
+      "url": "https://www.forbes.com/sites/forbestechcouncil/2026/01/05/software-development-predictions-2026/",
+      "snippet": "Industry leaders share their predictions for how AI will transform software development in 2026.",
       "platform": "yahoo",
-      "timestamp": "2026-03-08T02:45:21.341798+00:00"
+      "timestamp": "2026-03-08T02:49:17.995742+00:00"
     },
     {
-      "title": "GitHub Copilot and AI Coding Tools",
-      "url": "https://github.com/features/copilot",
-      "snippet": "GitHub Copilot brings the power of generative AI to your development workflow.",
+      "title": "GitHub Copilot now supports custom models and enterprise features",
+      "url": "https://github.blog/changelog/2026-01-15-copilot-enterprise-features/",
+      "snippet": "GitHub announces new Copilot features including custom model support and enhanced security for enterprises.",
       "platform": "duckduckgo",
-      "timestamp": "2026-03-08T02:45:21.341798+00:00"
+      "timestamp": "2026-03-08T02:49:17.995742+00:00"
     },
     {
-      "title": "Claude Code - AI Coding Assistant",
-      "url": "https://www.anthropic.com/claude",
-      "snippet": "Anthropic's Claude Code helps developers write, debug, and understand code faster.",
+      "title": "Anthropic releases Claude Code with advanced debugging capabilities",
+      "url": "https://www.anthropic.com/news/claude-code-debugging",
+      "snippet": "Claude Code now features advanced debugging, code refactoring, and multi-file editing capabilities.",
       "platform": "duckduckgo",
-      "timestamp": "2026-03-08T02:45:21.341798+00:00"
+      "timestamp": "2026-03-08T02:49:17.995742+00:00"
     },
     {
-      "title": "OpenCode - Open Source AI Coding Agent",
-      "url": "https://opencode.ai",
-      "snippet": "The open source AI coding agent with over 120K GitHub stars and 5M monthly developers.",
+      "title": "OpenCode reaches 120K GitHub stars, becomes most popular open source AI coding agent",
+      "url": "https://opencode.ai/blog/120k-stars-milestone",
+      "snippet": "The open source AI coding agent celebrates a major milestone with 120K stars and 5M monthly active developers.",
       "platform": "duckduckgo",
-      "timestamp": "2026-03-08T02:45:21.341798+00:00"
+      "timestamp": "2026-03-08T02:49:17.995742+00:00"
+    },
+    {
+      "title": "Microsoft announces new AI coding features for VS Code",
+      "url": "https://devblogs.microsoft.com/visualstudio/ai-coding-features-2026/",
+      "snippet": "Visual Studio Code gets new AI-powered features including inline chat, code generation, and intelligent refactoring.",
+      "platform": "brave",
+      "timestamp": "2026-03-08T02:49:17.995742+00:00"
+    },
+    {
+      "title": "The state of AI coding tools in 2026: A comprehensive survey",
+      "url": "https://stackoverflow.blog/2026/01/10/state-of-ai-coding-tools-2026/",
+      "snippet": "Stack Overflow's annual survey reveals how developers are using AI coding tools and their impact on productivity.",
+      "platform": "yahoo",
+      "timestamp": "2026-03-08T02:49:17.995742+00:00"
     }
   ]
 }
