@@ -43,64 +43,111 @@ jobs:
           # No API keys needed for DuckDuckGo, Brave, Yahoo
           EOF
           
-          # 搜索 AI Coding 新闻
-          python -m scripts.union_search.union_search "AI coding news" \
-            --platforms duckduckgo brave yahoo \
-            --limit 10 \
-            --json > /tmp/news_raw.json 2>/dev/null || echo '{"error": "search failed"}' > /tmp/news_raw.json
+          # 搜索 AI Coding 新闻 - 使用直接搜索而非联合搜索
+          python scripts/duckduckgo/duckduckgo_search.py "AI coding news 2026" -m 15 --json > /tmp/ddg.json 2>/dev/null || echo '[]' > /tmp/ddg.json
+          python scripts/brave/brave_search.py "AI coding news 2026" -m 15 --json > /tmp/brave.json 2>/dev/null || echo '[]' > /tmp/brave.json
+          python scripts/yahoo/yahoo_search.py "AI coding news 2026" -m 15 --json > /tmp/yahoo.json 2>/dev/null || echo '[]' > /tmp/yahoo.json
 
       - name: Process News Data
         run: |
           python << 'PYTHON_SCRIPT'
           import json
           import os
+          import re
           from datetime import datetime, timezone
 
-          # 读取原始搜索结果
-          try:
-              with open('/tmp/news_raw.json', 'r', encoding='utf-8') as f:
-                  raw_data = json.load(f)
-          except:
-              raw_data = {"error": "failed to load"}
+          def is_valid_url(url):
+              """检查 URL 是否有效，过滤掉重定向链接"""
+              if not url or url == '#':
+                  return False
+              # 过滤掉搜索引擎的重定向链接
+              invalid_patterns = [
+                  r'duckduckgo\.com/y\.js',
+                  r'duckduckgo\.com/\.js',
+                  r'google\.com/url\?',
+                  r'bing\.com/ck/a',
+                  r'^/search',
+                  r'^/\?q=',
+              ]
+              for pattern in invalid_patterns:
+                  if re.search(pattern, url, re.IGNORECASE):
+                      return False
+              return True
+
+          def clean_url(url):
+              """清理 URL，提取真实链接"""
+              if not url:
+                  return '#'
+              # 处理 DuckDuckGo 重定向
+              if 'duckduckgo.com/y.js' in url:
+                  # 尝试从 URL 中提取 u3 参数
+                  match = re.search(r'u3=([^&]+)', url)
+                  if match:
+                      import urllib.parse
+                      return urllib.parse.unquote(match.group(1))
+              return url
+
+          # 读取搜索结果
+          def load_json_file(path):
+              try:
+                  with open(path, 'r', encoding='utf-8') as f:
+                      data = json.load(f)
+                      return data if isinstance(data, list) else []
+              except:
+                  return []
+
+          ddg_results = load_json_file('/tmp/ddg.json')
+          brave_results = load_json_file('/tmp/brave.json')
+          yahoo_results = load_json_file('/tmp/yahoo.json')
 
           # 处理新闻数据
           news_items = []
           timestamp = datetime.now(timezone.utc).isoformat()
 
-          # 从原始数据中提取新闻
-          if isinstance(raw_data, dict):
-              # 尝试从不同格式中提取
-              platforms = ['duckduckgo', 'brave', 'yahoo']
-              
-              for platform in platforms:
-                  if platform in raw_data:
-                      platform_data = raw_data[platform]
-                      if isinstance(platform_data, dict) and 'results' in platform_data:
-                          for item in platform_data['results'][:10]:  # 每个平台最多 10 条
-                              if isinstance(item, dict):
-                                  news_items.append({
-                                      'title': item.get('title', '无标题'),
-                                      'url': item.get('link', item.get('url', '#')),
-                                      'snippet': item.get('snippet', item.get('description', '')),
-                                      'platform': platform,
-                                      'timestamp': timestamp
-                                  })
-                      elif isinstance(platform_data, list):
-                          for item in platform_data[:10]:
-                              if isinstance(item, dict):
-                                  news_items.append({
-                                      'title': item.get('title', '无标题'),
-                                      'url': item.get('link', item.get('url', '#')),
-                                      'snippet': item.get('snippet', item.get('description', '')),
-                                      'platform': platform,
-                                      'timestamp': timestamp
-                                  })
+          # 处理 DuckDuckGo 结果
+          for item in ddg_results[:10]:
+              if isinstance(item, dict):
+                  url = clean_url(item.get('url', item.get('link', '')))
+                  if is_valid_url(url):
+                      news_items.append({
+                          'title': item.get('title', '无标题'),
+                          'url': url,
+                          'snippet': item.get('body', item.get('snippet', '')),
+                          'platform': 'duckduckgo',
+                          'timestamp': timestamp
+                      })
+
+          # 处理 Brave 结果
+          for item in brave_results[:10]:
+              if isinstance(item, dict):
+                  url = item.get('url', item.get('link', ''))
+                  if is_valid_url(url):
+                      news_items.append({
+                          'title': item.get('title', '无标题'),
+                          'url': url,
+                          'snippet': item.get('snippet', item.get('description', '')),
+                          'platform': 'brave',
+                          'timestamp': timestamp
+                      })
+
+          # 处理 Yahoo 结果
+          for item in yahoo_results[:10]:
+              if isinstance(item, dict):
+                  url = item.get('url', item.get('link', ''))
+                  if is_valid_url(url):
+                      news_items.append({
+                          'title': item.get('title', '无标题'),
+                          'url': url,
+                          'snippet': item.get('snippet', item.get('description', '')),
+                          'platform': 'yahoo',
+                          'timestamp': timestamp
+                      })
 
           # 如果没有获取到新闻，使用备用数据
           if len(news_items) == 0:
               news_items = [{
                   'title': '暂无新闻数据，请稍后重试',
-                  'url': 'https://github.com/runningZ1/ai-coding-news',
+                  'url': 'https://github.com/h1048576/ai-coding-news',
                   'snippet': '新闻获取失败，请检查 GitHub Actions 日志',
                   'platform': 'system',
                   'timestamp': timestamp
