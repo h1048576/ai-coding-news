@@ -4,7 +4,7 @@
 
 set -e
 
-REPO_URL="https://github.com/runningZ1/ai-coding-news.git"
+REPO_URL="https://github.com/h1048576/ai-coding-news.git"
 
 echo "🚀 Deploying AI Coding News to GitHub Pages..."
 echo ""

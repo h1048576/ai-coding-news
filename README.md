@@ -4,7 +4,7 @@
 
 ## 🌐 在线访问
 
-[https://runningZ1.github.io/ai-coding-news](https://runningZ1.github.io/ai-coding-news)
+[https://h1048576.github.io/ai-coding-news](https://h1048576.github.io/ai-coding-news)
 
 ## ✨ 功能特点
 
@@ -23,7 +23,7 @@
 gh repo create ai-coding-news --public --source=. --remote=origin --push
 
 # 2. 启用 GitHub Pages
-gh api repos/runningZ1/ai-coding-news/pages \
+gh api repos/h1048576/ai-coding-news/pages \
   --method POST \
   -f source='{"branch":"main","path":"/"}'
 ```
@@ -37,7 +37,7 @@ gh api repos/runningZ1/ai-coding-news/pages \
    git add .
    git commit -m "Initial commit: AI Coding News website"
    git branch -M main
-   git remote add origin https://github.com/runningZ1/ai-coding-news.git
+   git remote add origin https://github.com/h1048576/ai-coding-news.git
    git push -u origin main
    ```
 
@@ -49,7 +49,7 @@ gh api repos/runningZ1/ai-coding-news/pages \
 
 3. **访问网站**
    - 等待 1-2 分钟部署完成
-   - 访问 `https://runningZ1.github.io/ai-coding-news`
+   - 访问 `https://h1048576.github.io/ai-coding-news`
 
 ## ⚙️ GitHub Actions 配置
 
@@ -143,7 +143,7 @@ on:
 
 ```bash
 # 克隆项目
-git clone https://github.com/runningZ1/ai-coding-news.git
+git clone https://github.com/h1048576/ai-coding-news.git
 cd ai-coding-news
 
 # 使用任意 HTTP 服务器预览
