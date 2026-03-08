@@ -1,0 +1,141 @@
+name: Fetch AI Coding News
+
+on:
+  schedule:
+    # 每天 UTC 时间 00:00 运行 (北京时间 08:00)
+    - cron: '0 0 * * *'
+  workflow_dispatch: # 允许手动触发
+
+permissions:
+  contents: write
+
+jobs:
+  fetch-news:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests python-dotenv lxml
+
+      - name: Clone union-search-skill
+        run: |
+          mkdir -p skills
+          git clone --depth 1 https://github.com/runningZ1/union-search-skill.git skills/union-search-skill
+
+      - name: Fetch AI Coding News
+        run: |
+          cd skills/union-search-skill
+          
+          # 创建 .env 文件
+          cat > .env << 'EOF'
+          # No API keys needed for DuckDuckGo, Brave, Yahoo
+          EOF
+          
+          # 搜索 AI Coding 新闻
+          python -m scripts.union_search.union_search "AI coding news" \
+            --platforms duckduckgo brave yahoo \
+            --limit 10 \
+            --json > /tmp/news_raw.json 2>/dev/null || echo '{"error": "search failed"}' > /tmp/news_raw.json
+
+      - name: Process News Data
+        run: |
+          python << 'PYTHON_SCRIPT'
+          import json
+          import os
+          from datetime import datetime, timezone
+
+          # 读取原始搜索结果
+          try:
+              with open('/tmp/news_raw.json', 'r', encoding='utf-8') as f:
+                  raw_data = json.load(f)
+          except:
+              raw_data = {"error": "failed to load"}
+
+          # 处理新闻数据
+          news_items = []
+          timestamp = datetime.now(timezone.utc).isoformat()
+
+          # 从原始数据中提取新闻
+          if isinstance(raw_data, dict):
+              # 尝试从不同格式中提取
+              platforms = ['duckduckgo', 'brave', 'yahoo']
+              
+              for platform in platforms:
+                  if platform in raw_data:
+                      platform_data = raw_data[platform]
+                      if isinstance(platform_data, dict) and 'results' in platform_data:
+                          for item in platform_data['results'][:10]:  # 每个平台最多 10 条
+                              if isinstance(item, dict):
+                                  news_items.append({
+                                      'title': item.get('title', '无标题'),
+                                      'url': item.get('link', item.get('url', '#')),
+                                      'snippet': item.get('snippet', item.get('description', '')),
+                                      'platform': platform,
+                                      'timestamp': timestamp
+                                  })
+                      elif isinstance(platform_data, list):
+                          for item in platform_data[:10]:
+                              if isinstance(item, dict):
+                                  news_items.append({
+                                      'title': item.get('title', '无标题'),
+                                      'url': item.get('link', item.get('url', '#')),
+                                      'snippet': item.get('snippet', item.get('description', '')),
+                                      'platform': platform,
+                                      'timestamp': timestamp
+                                  })
+
+          # 如果没有获取到新闻，使用备用数据
+          if len(news_items) == 0:
+              news_items = [{
+                  'title': '暂无新闻数据，请稍后重试',
+                  'url': 'https://github.com/runningZ1/ai-coding-news',
+                  'snippet': '新闻获取失败，请检查 GitHub Actions 日志',
+                  'platform': 'system',
+                  'timestamp': timestamp
+              }]
+
+          # 生成最终数据
+          output_data = {
+              'timestamp': timestamp,
+              'generated_at': datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC'),
+              'total_count': len(news_items),
+              'news': news_items
+          }
+
+          # 写入 news.json
+          os.makedirs('/tmp/output', exist_ok=True)
+          with open('/tmp/output/news.json', 'w', encoding='utf-8') as f:
+              json.dump(output_data, f, ensure_ascii=False, indent=2)
+
+          print(f"Generated news.json with {len(news_items)} items")
+          PYTHON_SCRIPT
+
+      - name: Copy news to root
+        run: |
+          cp /tmp/output/news.json ./news.json
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          
+          if ! git diff --quiet news.json; then
+            git add news.json
+            git commit -m "📰 Update AI coding news $(date +%Y-%m-%d)"
+            git push
+            echo "News updated successfully"
+          else
+            echo "No changes to commit"
+          fi
