@@ -1,6 +1,6 @@
 {
-  "timestamp": "2026-04-03T02:09:02.409719+00:00",
-  "generated_at": "2026-04-03 02:09:02 UTC",
+  "timestamp": "2026-04-04T02:01:43.576405+00:00",
+  "generated_at": "2026-04-04 02:01:43 UTC",
   "total_count": 1,
   "news": [
     {
@@ -8,7 +8,7 @@
       "url": "https://github.com/h1048576/ai-coding-news",
       "snippet": "新闻获取失败，请检查 GitHub Actions 日志",
       "platform": "system",
-      "timestamp": "2026-04-03T02:09:02.409719+00:00"
+      "timestamp": "2026-04-04T02:01:43.576405+00:00"
     }
   ]
 }
